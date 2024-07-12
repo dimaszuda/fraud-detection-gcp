@@ -1,0 +1,690 @@
+{
+  "components": {
+    "comp-calculate-metrics": {
+      "executorLabel": "exec-calculate-metrics",
+      "inputDefinitions": {
+        "artifacts": {
+          "test_data": {
+            "artifactType": {
+              "schemaTitle": "system.Artifact",
+              "schemaVersion": "0.0.1"
+            }
+          },
+          "training_data": {
+            "artifactType": {
+              "schemaTitle": "system.Artifact",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        },
+        "parameters": {
+          "algoritma": {
+            "parameterType": "LIST"
+          },
+          "metrics": {
+            "parameterType": "LIST"
+          }
+        }
+      },
+      "outputDefinitions": {
+        "artifacts": {
+          "evaluation": {
+            "artifactType": {
+              "schemaTitle": "system.Dataset",
+              "schemaVersion": "0.0.1"
+            }
+          },
+          "model": {
+            "artifactType": {
+              "schemaTitle": "system.Model",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        }
+      }
+    },
+    "comp-create-df": {
+      "executorLabel": "exec-create-df",
+      "inputDefinitions": {
+        "artifacts": {
+          "data_input": {
+            "artifactType": {
+              "schemaTitle": "system.Dataset",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        }
+      },
+      "outputDefinitions": {
+        "artifacts": {
+          "dataset_test": {
+            "artifactType": {
+              "schemaTitle": "system.Artifact",
+              "schemaVersion": "0.0.1"
+            }
+          },
+          "dataset_train": {
+            "artifactType": {
+              "schemaTitle": "system.Artifact",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        },
+        "parameters": {
+          "dict_keys": {
+            "parameterType": "STRUCT"
+          },
+          "shape_test": {
+            "parameterType": "NUMBER_INTEGER"
+          },
+          "shape_train": {
+            "parameterType": "NUMBER_INTEGER"
+          }
+        }
+      }
+    },
+    "comp-evaluation-metrics": {
+      "executorLabel": "exec-evaluation-metrics",
+      "inputDefinitions": {
+        "artifacts": {
+          "predictions": {
+            "artifactType": {
+              "schemaTitle": "system.Dataset",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        },
+        "parameters": {
+          "dict_keys": {
+            "parameterType": "STRUCT"
+          },
+          "metrics_name": {
+            "parameterType": "LIST"
+          },
+          "model_names": {
+            "parameterType": "LIST"
+          },
+          "pred_column_name": {
+            "parameterType": "STRING"
+          },
+          "true_column_name": {
+            "parameterType": "STRING"
+          }
+        }
+      },
+      "outputDefinitions": {
+        "artifacts": {
+          "eval_metrics": {
+            "artifactType": {
+              "schemaTitle": "system.Metrics",
+              "schemaVersion": "0.0.1"
+            }
+          },
+          "kpi": {
+            "artifactType": {
+              "schemaTitle": "system.Metrics",
+              "schemaVersion": "0.0.1"
+            }
+          },
+          "metrics": {
+            "artifactType": {
+              "schemaTitle": "system.ClassificationMetrics",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        }
+      }
+    },
+    "comp-extract-table-to-bq": {
+      "executorLabel": "exec-extract-table-to-bq",
+      "inputDefinitions": {
+        "parameters": {
+          "PROJECT_ID": {
+            "parameterType": "STRING"
+          },
+          "bq_schema": {
+            "parameterType": "LIST"
+          },
+          "dataset_id": {
+            "parameterType": "STRING"
+          },
+          "gcs_uri": {
+            "parameterType": "STRING"
+          },
+          "table_id": {
+            "parameterType": "STRING"
+          }
+        }
+      },
+      "outputDefinitions": {
+        "artifacts": {
+          "dataset": {
+            "artifactType": {
+              "schemaTitle": "system.Dataset",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        }
+      }
+    },
+    "comp-test-model": {
+      "executorLabel": "exec-test-model",
+      "inputDefinitions": {
+        "artifacts": {
+          "model": {
+            "artifactType": {
+              "schemaTitle": "system.Model",
+              "schemaVersion": "0.0.1"
+            }
+          },
+          "test_data": {
+            "artifactType": {
+              "schemaTitle": "system.Artifact",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        },
+        "parameters": {
+          "model_names": {
+            "parameterType": "LIST"
+          }
+        }
+      },
+      "outputDefinitions": {
+        "artifacts": {
+          "predictions": {
+            "artifactType": {
+              "schemaTitle": "system.Dataset",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        }
+      }
+    },
+    "comp-train-model": {
+      "executorLabel": "exec-train-model",
+      "inputDefinitions": {
+        "artifacts": {
+          "training_data": {
+            "artifactType": {
+              "schemaTitle": "system.Artifact",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        },
+        "parameters": {
+          "C": {
+            "defaultValue": 1.0,
+            "isOptional": true,
+            "parameterType": "NUMBER_DOUBLE"
+          },
+          "eval_metrics": {
+            "defaultValue": "logloss",
+            "isOptional": true,
+            "parameterType": "STRING"
+          },
+          "kernel": {
+            "defaultValue": "linear",
+            "isOptional": true,
+            "parameterType": "STRING"
+          },
+          "learning_rate": {
+            "defaultValue": 0.05,
+            "isOptional": true,
+            "parameterType": "NUMBER_INTEGER"
+          },
+          "max_depth": {
+            "defaultValue": 1.0,
+            "isOptional": true,
+            "parameterType": "NUMBER_INTEGER"
+          },
+          "n_estimator": {
+            "defaultValue": 100.0,
+            "isOptional": true,
+            "parameterType": "NUMBER_INTEGER"
+          },
+          "n_jobs": {
+            "defaultValue": -1.0,
+            "isOptional": true,
+            "parameterType": "NUMBER_INTEGER"
+          },
+          "random_state": {
+            "defaultValue": 55.0,
+            "isOptional": true,
+            "parameterType": "NUMBER_INTEGER"
+          },
+          "use_label_encoder": {
+            "defaultValue": false,
+            "isOptional": true,
+            "parameterType": "BOOLEAN"
+          }
+        }
+      },
+      "outputDefinitions": {
+        "artifacts": {
+          "model": {
+            "artifactType": {
+              "schemaTitle": "system.Model",
+              "schemaVersion": "0.0.1"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultPipelineRoot": "gs://loan-approval/mlops",
+  "deploymentSpec": {
+    "executors": {
+      "exec-calculate-metrics": {
+        "container": {
+          "args": [
+            "--executor_input",
+            "{{$}}",
+            "--function_to_execute",
+            "calculate_metrics"
+          ],
+          "command": [
+            "sh",
+            "-c",
+            "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location 'kfp==2.7.0' '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"' && \"$0\" \"$@\"\n",
+            "sh",
+            "-ec",
+            "program_path=$(mktemp -d)\n\nprintf \"%s\" \"$0\" > \"$program_path/ephemeral_component.py\"\n_KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+            "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import *\n\ndef calculate_metrics(\n        metrics: List[str],\n        algoritma: List[str],\n        model: Output[Model], \n        training_data: InputPath(),\n        test_data: InputPath(),\n        evaluation: Output[Dataset]\n) -> None:\n    try:\n        # Read dataset train and test from Big Query\n        with open(training_data + \".pkl\", 'rb') as file:\n            train_data = pickle.load(file)\n        X_train = train_data['x_train']\n        y_train = train_data['y_train']\n\n        with open(test_data + \".pkl\", 'rb') as file:\n            test_data = pickle.load(file)\n        X_test = test_data['x_test']\n        y_test = test_data['y_test']\n\n        model_evaluation = build_model(metrics, algoritma)\n        RF, svc, ada, xgb, gradient = train_model(X_train, y_train)\n        model_dict = {\n            'Random Forest': RF,\n            'SVC': svc,\n            'Ada Boost': ada,\n            'XGBoost': xgb,\n            'Gradient Boost': gradient\n        }\n\n        logging.info(\"Start evaluate models...\")\n        start_time = time()\n        os.makedirs(model.path, exist_ok=True)\n        for name, mod in model_dict.items():\n            model_evaluation.loc[name, 'train_accuracy'] = accuracy_score(y_true=y_train, y_pred=mod.predict(X_train))\n            model_evaluation.loc[name, 'train_precision'] = precision_score(y_true=y_train, y_pred=mod.predict(X_train))\n            model_evaluation.loc[name, 'train_recall'] = recall_score(y_true=y_train, y_pred=mod.predict(X_train))\n            model_evaluation.loc[name, 'train_f1'] = f1_score(y_true=y_train, y_pred=mod.predict(X_train))\n\n            model_evaluation.loc[name, 'test_accuracy'] = accuracy_score(y_true=y_test, y_pred=mod.predict(X_test))\n            model_evaluation.loc[name, 'test_precision'] = precision_score(y_true=y_test, y_pred=mod.predict(X_test))\n            model_evaluation.loc[name, 'test_recall'] = recall_score(y_true=y_test, y_pred=mod.predict(X_test))\n            model_evaluation.loc[name, 'test_f1'] = f1_score(y_true=y_test, y_pred=mod.predict(X_test))\n\n            logging.info(f\"Save model {name} to: {model.path}\")\n            joblib.dump(mod, model.path + f\"/{name}.joblib\")\n\n        end_time = time()\n        process_time = end_time - start_time\n        logging.info(f\"Process evaluate model: {process_time}\")\n\n        os.makedirs(model.path, exist_ok=True)\n        # save evaluation metrics as csv file\n        logging.info(f\"Save evaluation metrics result to: {evaluation.path}\")\n        model_evaluation.to_csv(evaluation.path, sep=\",\", header=True, index=True)\n        logging.info(\"Successfully evaluate models...\")\n\n    except Exception as E:\n        logging.error(f\"Error while evaluate model: {E}\")\n\n    return model\n\n"
+          ],
+          "image": "gcr.io/deeplearning-platform-release/xgboost-cpu"
+        }
+      },
+      "exec-create-df": {
+        "container": {
+          "args": [
+            "--executor_input",
+            "{{$}}",
+            "--function_to_execute",
+            "create_df"
+          ],
+          "command": [
+            "sh",
+            "-c",
+            "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location 'kfp==2.7.0' '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"' && \"$0\" \"$@\"\n",
+            "sh",
+            "-ec",
+            "program_path=$(mktemp -d)\n\nprintf \"%s\" \"$0\" > \"$program_path/ephemeral_component.py\"\n_KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+            "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import *\n\ndef create_df(\n        data_input: Input[Dataset],\n        dataset_train: OutputPath(),\n        dataset_test: OutputPath()\n) -> NamedTuple(\"Outputs\", [(\"dict_keys\", dict), (\"shape_train\", int), (\"shape_test\", int)]):\n    \"\"\"\n    function to generate pandas dataframe from Big Query. This dataframe\n    is aimed to inference Model Training\n    \"\"\"\n    logging.info(\"Extract dataset from Big Query\")\n    try:\n        df = pd.read_csv(data_input.path)\n        df.dropna()\n        df.drop_duplicates()\n        df = pd.concat(\n            [\n                df,\n                pd.get_dummies(\n                    df['type']\n                ).astype(int)\n            ],\n            axis=1\n        )\n\n        df.drop(\n            ['type'], \n            axis=1, \n            inplace=True\n        )\n\n        if len(df) != 0:\n            logging.info(\"Drop label and attributes\")\n            X = df.drop(columns=['isFraud'], axis=1)\n            y = df['isFraud']\n            dic_keys = {k: label for k, label in enumerate(sorted(y.unique()))}\n\n            logging.info(\"Create Undersampling of the dataset\")\n            \"\"\"\n            We will do undersampling because dataset is imbalanced,\n            and will causing overfitting.\n            label fraud amount is 6M+\n            label not fraud is just 8K\n            \"\"\"\n            rus = RandomUnderSampler(random_state=42)\n            X_resampled, y_resampled = rus.fit(X, y)\n\n            logging.info(\"Split dataset into train and test set\")\n            X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.1, random_state=123)\n\n            logging.info(\"Normalize dataset\")\n            \"\"\"\n            Each column that doesn't have a value between 0 and 1 will be normalized\n            \"\"\"\n            numerical_features = ['amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest']\n            scaler = StandardScaler()\n            scaler.fit(X_train[numerical_features])\n            X_train[numerical_features] = scaler.transform(\n                                            X_train.loc[:, numerical_features]\n                                        )\n            X_test.loc[:, numerical_features] = scaler.transform(X_test[numerical_features])\n            x_train_results = {'X_train': X_train, 'y_train': y_train}\n            x_test_results = {'X_test': X_test, 'y_test': y_test}\n\n            logging.info(\"Create pickle file and send to Big Query\")\n            with open(dataset_train + \".pkl\", \"wb\") as file:\n                pickle.dump(x_train_results, file)\n            with open(dataset_test + \".pkl\", \"wb\") as file:\n                pickle.dump(x_test_results, file)\n            logging.info(f\"[END] - CREATE SETS, dataset was split\")\n\n            return (dic_keys, len(X_train), len(X_test))\n\n        else:\n            logging.error(f\"Cannot create dataset because dataset is empty\")\n            return None, None\n\n    except Exception as E:\n        logging.error(f\"Unexpected Error: {E}\")\n\n"
+          ],
+          "image": "gcr.io/deeplearning-platform-release/xgboost-cpu"
+        }
+      },
+      "exec-evaluation-metrics": {
+        "container": {
+          "args": [
+            "--executor_input",
+            "{{$}}",
+            "--function_to_execute",
+            "evaluation_metrics"
+          ],
+          "command": [
+            "sh",
+            "-c",
+            "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location 'kfp==2.7.0' '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"' && \"$0\" \"$@\"\n",
+            "sh",
+            "-ec",
+            "program_path=$(mktemp -d)\n\nprintf \"%s\" \"$0\" > \"$program_path/ephemeral_component.py\"\n_KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+            "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import *\n\ndef evaluation_metrics(\n        predictions: Input[Dataset],\n        metrics_name: List[str],\n        model_names: List[str],\n        dict_keys: Dict[str, int],\n        true_column_name: str,\n        pred_column_name: str,\n        metrics: Output[ClassificationMetrics],\n        kpi: Output[Metrics],\n        eval_metrics: Output[Metrics]\n) -> None:\n\n    for model_name in model_names:\n        filename = f\"{model_name}_predictions.csv\"\n        filepath = os.path.join(predictions.path, filename)\n        results = pd.read_csv(filepath)\n\n        results['class_true_clean'] = results[true_column_name].astype(str).map(dict_keys)\n        results['class_pred_clean'] = results[pred_column_name].astype(str).map(dict_keys)\n\n        module = import_module(\"sklearn.metrics\")\n        metrics_dict = {}\n        for metrics in metrics_name:\n            metric_func = getattr(module, metrics)\n            if metrics == \"f1_score\":\n                metric_val = metric_func(results['class_true_clean'], results['class_pred_clean'], average=None)\n            else:\n                metric_val = metric_func(results['class_true_clean'], results['class_pred_clean'])\n\n            metric_val = np.round(np.average(metric_val), 4)\n            metrics_dict[f\"{metrics}\"] = metric_val\n            kpi.log_metric(f\"{metrics}\", metric_val)\n\n            with open(kpi.path, \"w\") as f:\n                json.dump(kpi.metadata, f)\n            logging.info(f\"{metrics}: {metric_val:.3f}\")\n\n        with open(eval_metrics.path, \"w\") as f:\n            json.dump(metrics_dict, f)\n\n        # To generate the confusion matrix plot\n        confusion_matrix_func = getattr(module, \"confusion_matrix\")\n        metrics.log_confusion_matrix(\n            list(dict_keys.values()),\n            confusion_matrix_func(results['class_true_clean'], results['class_pred_clean']).tolist()\n        )\n\n        # Dumping metrics metadata\n        with open(metrics.path, \"w\") as f:\n            json.dump(metrics.metadata, f)\n\n"
+          ],
+          "image": "gcr.io/deeplearning-platform-release/xgboost-cpu"
+        }
+      },
+      "exec-extract-table-to-bq": {
+        "container": {
+          "args": [
+            "--executor_input",
+            "{{$}}",
+            "--function_to_execute",
+            "extract_table_to_bq"
+          ],
+          "command": [
+            "sh",
+            "-c",
+            "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location 'kfp==2.7.0' '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"' && \"$0\" \"$@\"\n",
+            "sh",
+            "-ec",
+            "program_path=$(mktemp -d)\n\nprintf \"%s\" \"$0\" > \"$program_path/ephemeral_component.py\"\n_KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+            "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import *\n\ndef extract_table_to_bq(\n        PROJECT_ID: str, \n        dataset_id: str, \n        table_id: str, \n        gcs_uri: str,\n        dataset: Output[Dataset],\n        bq_schema: List) -> None:\n    \"\"\"\n    Extract a table from GCS to BigQuery.\n    \"\"\"\n    logging.info(\"Create job to ingest data from gcs to bq\")\n    try:\n        TABLE_ID = f\"{PROJECT_ID}.{dataset_id}.{table_id}\"\n        client = bigquery.Client()\n        job_config = bigquery.LoadJobConfig(\n            schema=bq_schema,\n            source_format=bigquery.SourceFormat.CSV,\n            field_delimiter=\",\",\n            skip_leading_rows=1,\n        )\n        load_job = client.load_table_from_uri(\n            gcs_uri,\n            TABLE_ID,\n            job_config=job_config\n        )\n        load_job.result()\n        destination_table = client.get_table(TABLE_ID)\n        print(f\"Loaded {destination_table.num_rows} rows.\")\n        logging.info(\"Successfully ingest data\")\n    except Exception as e:\n        logging.error(f\"Error ingest data: {e}\")\n        return None\n\n"
+          ],
+          "image": "gcr.io/deeplearning-platform-release/xgboost-cpu"
+        }
+      },
+      "exec-test-model": {
+        "container": {
+          "args": [
+            "--executor_input",
+            "{{$}}",
+            "--function_to_execute",
+            "test_model"
+          ],
+          "command": [
+            "sh",
+            "-c",
+            "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location 'kfp==2.7.0' '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"' && \"$0\" \"$@\"\n",
+            "sh",
+            "-ec",
+            "program_path=$(mktemp -d)\n\nprintf \"%s\" \"$0\" > \"$program_path/ephemeral_component.py\"\n_KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+            "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import *\n\ndef test_model(\n    model_names: List[str],\n    test_data: InputPath(),\n    model: Input[Model],\n    predictions: Output[Dataset]\n) -> None:\n\n    with open(test_data + \".pkl\", \"rb\") as file:\n        test_data = pickle.load(file)\n\n    X_test = test_data['X_test']\n    y_test = test_data['y_test']\n\n    for model_name in model_names:\n        model_path = os.path.join(model.path, f\"{model_name}.joblib\")\n        model = joblib.load(model_path)\n        y_pred = model.predict(X_test)\n\n        df = pd.DataFrame(\n            {\n                'class_true': y_test.tolist(),\n                'class_pred': y_pred.tolist()\n            }\n        )\n\n        output_filename = f\"{model_name}_prediction.csv\"\n        output_path = os.path.join(predictions.path, output_filename)\n        df.to_csv(output_path, sep=\",\", header=True, index=False)\n\n"
+          ],
+          "image": "gcr.io/deeplearning-platform-release/xgboost-cpu"
+        }
+      },
+      "exec-train-model": {
+        "container": {
+          "args": [
+            "--executor_input",
+            "{{$}}",
+            "--function_to_execute",
+            "train_model"
+          ],
+          "command": [
+            "sh",
+            "-c",
+            "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet --no-warn-script-location 'kfp==2.7.0' '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"' && \"$0\" \"$@\"\n",
+            "sh",
+            "-ec",
+            "program_path=$(mktemp -d)\n\nprintf \"%s\" \"$0\" > \"$program_path/ephemeral_component.py\"\n_KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+            "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import *\n\ndef train_model(\n        training_data: InputPath(),\n        model: Output[Model],\n        n_estimator: int = 100,\n        max_depth: int = 1, \n        random_state: int = 55, \n        learning_rate: int = 0.05,\n        n_jobs: int  = -1,\n        use_label_encoder: bool = False,\n        eval_metrics: str = \"logloss\",\n        kernel: str = \"linear\",\n        C: float = 1.0,\n):\n    try:\n        logging.info(f\"Get dataset from Big Query\")\n        with open(training_data + \".pkl\", 'rb') as file:\n            train_data = pickle.load(file)\n        X_train = train_data['x_train']\n        y_train = train_data['y_train']\n\n        logging.info(\"Training models...\")\n        start_time = time()\n        \"\"\"\n        Training Random Forest Model\n        \"\"\"\n        logging.info(\"Training Random Forest Model\")\n        rf_start = time()\n        RF = RandomForestClassifier(\n            n_estimators=n_estimator,\n            max_depth=max_depth,\n            random_state=random_state,\n            n_jobs=n_jobs\n        )\n        RF.fit(X_train, y_train)\n        rf_end = time()\n        process_time = rf_end - rf_start\n        logging.info(f\"Process training Random Forest: {process_time}\")\n\n        \"\"\"\n        Training Support Vector Machine with Support Vector Classifier.\n        params:\n            kernel = \"linear\" \n            (it can be replace with other kernel like 'poly', 'rbf', 'sigmoid', 'precomputed')\n        \"\"\"\n        logging.info(\"Training Support Vector Machine Model\")\n        svc_start = time()\n        svc = svm.SVC(\n            kernel=kernel,\n            C=C\n        )\n        svc.fit(X_train, y_train)\n        svc_end = time()\n        process_time = svc_end - svc_start\n        logging.info(f\"process training SVC: {process_time}\")\n\n        \"\"\"\n        Training Ada Boost Classifier Model with learning rate 0.05\n        \"\"\"\n        ada_start = time()\n        ada = AdaBoostClassifier(\n            learning_rate=learning_rate,\n            random_state=random_state\n        )\n        ada.fit(X_train, y_train)\n        ada_end = time()\n        process_time = ada_end - ada_start\n        logging.info(f\"Process training Ada: {process_time}\")\n\n        \"\"\"\n        Training XG Boost Model with XG Classifier\n        params:\n            scale_post_weight -> help address class imbalances in a dataset\n            use_label_encoder = False ->  we set to False because we have already encoded the dataset\n        \"\"\"\n        xg_start = time()\n        scale_pos_weight = Counter(y_train)[0] / Counter(y_train)[1]\n        xgb = xgb.XGBClassifier(\n            scale_pos_weight=scale_pos_weight, \n            use_label_encoder=use_label_encoder, \n            eval_metrics=eval_metrics, \n            random_state=random_state\n        )\n        xgb.fit(X_train, y_train)\n        xg_end = time()\n        process_time = xg_end - xg_start\n        logging.info(f\"Process training XGBoost: {process_time}\")\n\n        \"\"\"\n        Training Gradient Boosting Model\n        \"\"\"\n        gradient_start = time()\n        gradient = GradientBoostingClassifier(\n            n_estimators=n_estimator,\n            learning_rate=learning_rate,\n            max_depth=max_depth,\n            random_state=random_state\n        )\n        gradient.fit(X_train, y_train)\n        gradient_end = time()\n        process_time = gradient_end - gradient_start\n        logging.info(f\"Process time Gradient Boosting: {process_time}\")\n\n        end_time = time()\n        logging.info(\"Successfully training models...\")\n        logging.info(f\"Total process training 5 models: {end_time - start_time}\")\n\n    except Exception as E:\n        logging.error(f\"Error while training models: {E}\")\n\n    return RF, svc, ada, xgb, gradient\n\n"
+          ],
+          "image": "gcr.io/deeplearning-platform-release/xgboost-cpu"
+        }
+      }
+    }
+  },
+  "pipelineInfo": {
+    "name": "fraud-detection-pipeline"
+  },
+  "root": {
+    "dag": {
+      "outputs": {
+        "artifacts": {
+          "evaluation-metrics-eval_metrics": {
+            "artifactSelectors": [
+              {
+                "outputArtifactKey": "eval_metrics",
+                "producerSubtask": "evaluation-metrics"
+              }
+            ]
+          },
+          "evaluation-metrics-kpi": {
+            "artifactSelectors": [
+              {
+                "outputArtifactKey": "kpi",
+                "producerSubtask": "evaluation-metrics"
+              }
+            ]
+          },
+          "evaluation-metrics-metrics": {
+            "artifactSelectors": [
+              {
+                "outputArtifactKey": "metrics",
+                "producerSubtask": "evaluation-metrics"
+              }
+            ]
+          }
+        }
+      },
+      "tasks": {
+        "calculate-metrics": {
+          "cachingOptions": {
+            "enableCache": true
+          },
+          "componentRef": {
+            "name": "comp-calculate-metrics"
+          },
+          "dependentTasks": [
+            "create-df"
+          ],
+          "inputs": {
+            "artifacts": {
+              "test_data": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "dataset_test",
+                  "producerTask": "create-df"
+                }
+              },
+              "training_data": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "dataset_train",
+                  "producerTask": "create-df"
+                }
+              }
+            },
+            "parameters": {
+              "algoritma": {
+                "componentInputParameter": "algoritma"
+              },
+              "metrics": {
+                "componentInputParameter": "metrics"
+              }
+            }
+          },
+          "taskInfo": {
+            "name": "Calculating metrics of models"
+          }
+        },
+        "create-df": {
+          "cachingOptions": {
+            "enableCache": true
+          },
+          "componentRef": {
+            "name": "comp-create-df"
+          },
+          "dependentTasks": [
+            "extract-table-to-bq"
+          ],
+          "inputs": {
+            "artifacts": {
+              "data_input": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "dataset",
+                  "producerTask": "extract-table-to-bq"
+                }
+              }
+            }
+          },
+          "taskInfo": {
+            "name": "Create dataset train and test"
+          }
+        },
+        "evaluation-metrics": {
+          "cachingOptions": {
+            "enableCache": true
+          },
+          "componentRef": {
+            "name": "comp-evaluation-metrics"
+          },
+          "dependentTasks": [
+            "create-df",
+            "test-model"
+          ],
+          "inputs": {
+            "artifacts": {
+              "predictions": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "predictions",
+                  "producerTask": "test-model"
+                }
+              }
+            },
+            "parameters": {
+              "dict_keys": {
+                "taskOutputParameter": {
+                  "outputParameterKey": "dict_keys",
+                  "producerTask": "create-df"
+                }
+              },
+              "metrics_name": {
+                "componentInputParameter": "metrics_names"
+              },
+              "model_names": {
+                "componentInputParameter": "algoritma"
+              },
+              "pred_column_name": {
+                "runtimeValue": {
+                  "constant": "class_pred"
+                }
+              },
+              "true_column_name": {
+                "runtimeValue": {
+                  "constant": "class_true"
+                }
+              }
+            }
+          },
+          "taskInfo": {
+            "name": "Evaluation metrics"
+          }
+        },
+        "extract-table-to-bq": {
+          "cachingOptions": {
+            "enableCache": true
+          },
+          "componentRef": {
+            "name": "comp-extract-table-to-bq"
+          },
+          "inputs": {
+            "parameters": {
+              "PROJECT_ID": {
+                "componentInputParameter": "PROJECT_ID"
+              },
+              "bq_schema": {
+                "componentInputParameter": "bq_schema"
+              },
+              "dataset_id": {
+                "componentInputParameter": "dataset_id"
+              },
+              "gcs_uri": {
+                "componentInputParameter": "gcs_uri"
+              },
+              "table_id": {
+                "componentInputParameter": "table_id"
+              }
+            }
+          },
+          "taskInfo": {
+            "name": "Extract table to bq"
+          }
+        },
+        "test-model": {
+          "cachingOptions": {
+            "enableCache": true
+          },
+          "componentRef": {
+            "name": "comp-test-model"
+          },
+          "dependentTasks": [
+            "create-df",
+            "train-model"
+          ],
+          "inputs": {
+            "artifacts": {
+              "model": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "model",
+                  "producerTask": "train-model"
+                }
+              },
+              "test_data": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "dataset_test",
+                  "producerTask": "create-df"
+                }
+              }
+            },
+            "parameters": {
+              "model_names": {
+                "componentInputParameter": "algoritma"
+              }
+            }
+          },
+          "taskInfo": {
+            "name": "Testing model by create predictions"
+          }
+        },
+        "train-model": {
+          "cachingOptions": {
+            "enableCache": true
+          },
+          "componentRef": {
+            "name": "comp-train-model"
+          },
+          "dependentTasks": [
+            "create-df"
+          ],
+          "inputs": {
+            "artifacts": {
+              "training_data": {
+                "taskOutputArtifact": {
+                  "outputArtifactKey": "dataset_train",
+                  "producerTask": "create-df"
+                }
+              }
+            }
+          },
+          "taskInfo": {
+            "name": "Training Model"
+          }
+        }
+      }
+    },
+    "inputDefinitions": {
+      "parameters": {
+        "PROJECT_ID": {
+          "parameterType": "STRING"
+        },
+        "algoritma": {
+          "parameterType": "LIST"
+        },
+        "bq_schema": {
+          "parameterType": "LIST"
+        },
+        "dataset_id": {
+          "parameterType": "STRING"
+        },
+        "gcs_uri": {
+          "parameterType": "STRING"
+        },
+        "metrics": {
+          "parameterType": "LIST"
+        },
+        "metrics_names": {
+          "parameterType": "LIST"
+        },
+        "table_id": {
+          "parameterType": "STRING"
+        }
+      }
+    },
+    "outputDefinitions": {
+      "artifacts": {
+        "evaluation-metrics-eval_metrics": {
+          "artifactType": {
+            "schemaTitle": "system.Metrics",
+            "schemaVersion": "0.0.1"
+          }
+        },
+        "evaluation-metrics-kpi": {
+          "artifactType": {
+            "schemaTitle": "system.Metrics",
+            "schemaVersion": "0.0.1"
+          }
+        },
+        "evaluation-metrics-metrics": {
+          "artifactType": {
+            "schemaTitle": "system.ClassificationMetrics",
+            "schemaVersion": "0.0.1"
+          }
+        }
+      }
+    }
+  },
+  "schemaVersion": "2.1.0",
+  "sdkVersion": "kfp-2.7.0"
+}
